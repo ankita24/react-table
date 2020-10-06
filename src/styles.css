@@ -1,0 +1,43 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+td,
+th {
+  text-align: left;
+  padding: 12px;
+  right: 5px;
+  border: 1px solid black;
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+th {
+  background-color: grey;
+}
+th {
+  background-color: grey;
+}
+body.notFixed .thItem {
+  background-color: grey;
+  user-select: none;
+}
+
+body.fixed .thItem {
+  background-color: grey;
+  position: sticky;
+  top: 0;
+  user-select: none;
+}
+
+.flexDiv {
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-between;
+}
+.flexDiv div {
+  padding: 5px 0;
+  border-bottom: 1px solid black;
+}
