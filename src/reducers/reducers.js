@@ -21,14 +21,16 @@ export const orderReducer = (state, action) => {
       };
 
     case "SET_PAGINATION_DATA":
-      const { pageNumber } = action;
+      const { pageNumber, isPaginationEnabled } = action;
       return {
         ...state,
         total: state.initialData.length,
-        data: state.initialData.slice(
-          Number((pageNumber - 1) * state.size), //ye
-          Number((pageNumber - 1) * state.size) + Number(state.size)
-        ),
+        data: isPaginationEnabled
+          ? state.initialData.slice(
+              Number((pageNumber - 1) * state.size), //ye
+              Number((pageNumber - 1) * state.size) + Number(state.size)
+            )
+          : state.initialData,
         pageNumber
       };
     case "SET_SIZE": {
@@ -36,6 +38,7 @@ export const orderReducer = (state, action) => {
       return {
         ...state,
         size,
+        pageNumber: 1,
         total: state.initialData.length,
         data: state.initialData.slice(0, size)
       };
@@ -97,10 +100,11 @@ export function setData(data) {
   };
 }
 
-export function setPaginatedData(pageNumber) {
+export function setPaginatedData(pageNumber, isPaginationEnabled) {
   return {
     type: "SET_PAGINATION_DATA",
-    pageNumber
+    pageNumber,
+    isPaginationEnabled
   };
 }
 

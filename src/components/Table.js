@@ -70,7 +70,7 @@ const Table = ({
               <td>{item.capital}</td>
               <td>{item.population}</td>
               <td>{item.region}</td>
-              <td>{item.cioc}</td>
+              <td>{item.area}</td>
             </tr>
           );
         })}

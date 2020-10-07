@@ -43,7 +43,7 @@ export default function App() {
     }
   };
   React.useEffect(() => {
-    if (config.pagination) dispatch(setPaginatedData(1));
+    dispatch(setPaginatedData(1, config.pagination));
   }, [config.pagination]);
 
   const handleHeader = () => {
@@ -71,7 +71,7 @@ export default function App() {
   };
 
   const handlePageNumber = (value) => {
-    dispatch(setPaginatedData(value));
+    dispatch(setPaginatedData(value, config.pagination));
   };
   const handleFilters = (e) => {
     dispatchConfig(setFilter(e.target.value));

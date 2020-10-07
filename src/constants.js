@@ -16,7 +16,7 @@ export const headers = [
     value: "region"
   },
   {
-    label: "CIOC",
-    value: "cioc"
+    label: "Area (in sq. km)",
+    value: "area"
   }
 ];

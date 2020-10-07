@@ -4,12 +4,12 @@ const Header = (props) => {
   return (
     <>
       <div
-        style={{ textAlign: "right", width: "200px", paddingBottom: "10px" }}
+        style={{ textAlign: "right", width: "240px", paddingBottom: "10px" }}
       >
         <div className="flexDiv">
-          <div style={{ marginLeft: 25 }}>Filters</div>
-          <div style={{ marginLeft: 25 }}>Sorting</div>
-          <div style={{ marginLeft: 25 }}>Filtered</div>
+          <div style={{ marginLeft: 75 }}>Filters</div>
+          <div style={{ marginLeft: 5 }}>Sorting</div>
+          <div style={{ marginLeft: 0 }}>Filtered</div>
         </div>
         {headers.map(({ value, label }) => {
           return (
