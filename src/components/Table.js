@@ -1,5 +1,6 @@
 import React from "react";
 import { SortIcon } from "./sort-icon";
+
 const TableHeader = ({ value, label, onClick, sortOrder, disabled }) => {
   function handleClick() {
     if (disabled) {
@@ -14,12 +15,32 @@ const TableHeader = ({ value, label, onClick, sortOrder, disabled }) => {
   );
 };
 
-const Table = ({ headers, data, order, handleHeaderClick, sortingList }) => {
+const Table = ({ headers, data, order, handleHeaderClick, config,handleSearch }) => {
   if (!data.length) {
     return null;
   }
   return (
     <table style={{ width: "100%" }}>
+      <thead>
+        <tr>
+          {headers.map(({ value, label }) => {
+            return (
+              <td key={value}>
+                {config.filterableList[value] ? (
+                  <input
+                    placeholder={`Search for ${label}`}
+                    onKeyDown={(e) =>
+                      handleSearch(e, value)
+                    }
+                  />
+                ) : (
+                  ""
+                )}
+              </td>
+            );
+          })}
+        </tr>
+      </thead>
       <thead>
         <tr>
           {headers.map(({ value, label }) => {
@@ -30,7 +51,7 @@ const Table = ({ headers, data, order, handleHeaderClick, sortingList }) => {
                 label={label}
                 sortOrder={order[value]}
                 onClick={handleHeaderClick}
-                disabled={!sortingList[value]}
+                disabled={!config.sortingList[value]}
               />
             );
           })}

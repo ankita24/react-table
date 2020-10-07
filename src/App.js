@@ -4,11 +4,18 @@ import Table from "./components/Table";
 import { headers } from "./constants";
 import {
   initialStateConfig,
+  setFilter,
   setHeader,
   setPagination,
   setSorting
 } from "./reducers/configReducers";
-import { initialState, setData, toggleOrder } from "./reducers/reducers";
+import {
+  initialState,
+  setData,
+  toggleOrder,
+  setPaginatedData,
+  setSize
+} from "./reducers/reducers";
 import rootReducers from "./rootReducers";
 import "./styles.css";
 import Pagination from "./components/Pagination";
@@ -35,33 +42,25 @@ export default function App() {
         region,
         cioc
       }));
-      if (!config.pagination) dispatch(setData({ data }));
-      else dispatch(setData({ size: 5, pageNumber: 1, data }));
+      dispatch(setData({ data }));
     }
   };
+  React.useEffect(() => {
+    if (config.pagination) dispatch(setPaginatedData(1));
+  }, [config.pagination]);
 
   const handleHeader = () => {
     dispatchConfig(setHeader());
   };
   const handlePagination = (e) => {
     dispatchConfig(setPagination());
-
-    dispatch(
-      setData({
-        size: !!e.target.checked ? 5 : undefined,
-        pageNumber: 1,
-        data: state.initialData
-      })
-    );
   };
 
   const handleSorting = (e) => {
     dispatchConfig(setSorting(e.target.value));
   };
   const total =
-    state.initialData && state.size
-      ? Math.ceil(state.initialData.length / Number(state.size))
-      : 0;
+    state.total && state.size ? Math.ceil(state.total / Number(state.size)) : 0;
 
   React.useEffect(() => {
     document.body.className = config.header ? "fixed" : "notFixed";
@@ -71,17 +70,27 @@ export default function App() {
     dispatch(toggleOrder(name));
   };
   const handleSize = (value) => {
-    dispatch(setData({ size: value, pageNumber: 1, data: state.initialData }));
+    dispatch(setSize(value));
   };
 
   const handlePageNumber = (value) => {
-    dispatch(
-      setData({
-        size: state.size,
-        pageNumber: value,
-        data: state.initialData
-      })
-    );
+    dispatch(setPaginatedData(value));
+  };
+  const handleFilters = (e) => {
+    dispatchConfig(setFilter(e.target.value));
+  };
+  const handleSearch = (e, value) => {
+    if (e.keyCode === 13) {
+      dispatch(
+        setData({
+          size: state.size,
+          pageNumber: 1,
+          searchValue: e.target.value,
+          value,
+          data: state.initialData
+        })
+      );
+    }
   };
   return (
     <div className="App">
@@ -91,13 +100,15 @@ export default function App() {
         handleSize={handleSize}
         config={config}
         handleSorting={handleSorting}
+        handleFilters={handleFilters}
       />
       <Table
         headers={headers}
         data={state.data}
         order={state.order}
         handleHeaderClick={handleHeaderClick}
-        sortingList={config.sortingList}
+        config={config}
+        handleSearch={handleSearch}
       />
       {config.pagination ? (
         <Pagination

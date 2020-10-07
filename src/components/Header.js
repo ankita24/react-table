@@ -29,6 +29,8 @@ const Header = (props) => {
                   type="checkbox"
                   name={value}
                   value={value}
+                  defaultChecked={props.config.filterableList[value]}
+                  onClick={props.handleFilters}
                 />
               </label>
             </div>
