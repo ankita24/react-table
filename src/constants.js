@@ -8,8 +8,8 @@ export const headers = [
     value: "capital"
   },
   {
-    label: "Flag",
-    value: "flag"
+    label: "Population",
+    value: "population"
   },
   {
     label: "Region",

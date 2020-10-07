@@ -19,6 +19,7 @@ import {
 import rootReducers from "./rootReducers";
 import "./styles.css";
 import Pagination from "./components/Pagination";
+import { pick } from "./util";
 
 export default function App() {
   React.useEffect(() => {
@@ -35,13 +36,9 @@ export default function App() {
     const response = await fetch(`https://restcountries.eu/rest/v2/all`);
     if (response.ok) {
       let info = await response.json();
-      const data = info.map(({ name, capital, flag, region, cioc }) => ({
-        name,
-        capital,
-        flag,
-        region,
-        cioc
-      }));
+      const data = info.map((country) => {
+        return pick(country, headers.map(header => header.value))
+      })
       dispatch(setData({ data }));
     }
   };

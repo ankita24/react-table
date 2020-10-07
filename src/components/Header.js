@@ -17,7 +17,7 @@ const Header = (props) => {
               <label>
                 {label}
                 <input
-                  style={{ marginLeft: 50 }}
+                  style={{ marginLeft: 40 }}
                   type="checkbox"
                   name={value}
                   value={value}

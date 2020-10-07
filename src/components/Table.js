@@ -15,7 +15,14 @@ const TableHeader = ({ value, label, onClick, sortOrder, disabled }) => {
   );
 };
 
-const Table = ({ headers, data, order, handleHeaderClick, config,handleSearch }) => {
+const Table = ({
+  headers,
+  data,
+  order,
+  handleHeaderClick,
+  config,
+  handleSearch
+}) => {
   if (!data.length) {
     return null;
   }
@@ -29,9 +36,7 @@ const Table = ({ headers, data, order, handleHeaderClick, config,handleSearch })
                 {config.filterableList[value] ? (
                   <input
                     placeholder={`Search for ${label}`}
-                    onKeyDown={(e) =>
-                      handleSearch(e, value)
-                    }
+                    onKeyDown={(e) => handleSearch(e, value)}
                   />
                 ) : (
                   ""
@@ -63,9 +68,7 @@ const Table = ({ headers, data, order, handleHeaderClick, config,handleSearch })
             <tr key={item.name}>
               <td>{item.name}</td>
               <td>{item.capital}</td>
-              <td>
-                <img src={item.flag} width="20" alt="flag" />
-              </td>
+              <td>{item.population}</td>
               <td>{item.region}</td>
               <td>{item.cioc}</td>
             </tr>

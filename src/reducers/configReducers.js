@@ -1,19 +1,15 @@
+import { headers } from "../constants";
+
+const initialCountryObj = {};
+headers.forEach(country => {
+  initialCountryObj[country.value] = false
+});
+
 export const initialStateConfig = {
   header: false,
   pagination: false,
-  sortingList: {
-    name: false,
-    capital: true,
-    flag: false,
-    region: false,
-    cioc: false
-  },
-  filterableList: {
-    name: false,
-    capital: true,
-    region: false,
-    cioc: true
-  }
+  sortingList: initialCountryObj,
+  filterableList: initialCountryObj
 };
 
 export const configReducers = (state, action) => {
