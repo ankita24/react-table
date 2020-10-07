@@ -35,7 +35,8 @@ export default function App() {
         region,
         cioc
       }));
-      dispatch(setData({ data }));
+      if (!config.pagination) dispatch(setData({ data }));
+      else dispatch(setData({ size: 5, pageNumber: 1, data }));
     }
   };
 
@@ -53,18 +54,15 @@ export default function App() {
       })
     );
   };
-  // bro?
+
   const handleSorting = (e) => {
     dispatchConfig(setSorting(e.target.value));
   };
   const total =
     state.initialData && state.size
-      ? [
-          ...Array(
-            Math.ceil(state.initialData.length / Number(state.size))
-          ).keys()
-        ]
-      : [];
+      ? Math.ceil(state.initialData.length / Number(state.size))
+      : 0;
+
   React.useEffect(() => {
     document.body.className = config.header ? "fixed" : "notFixed";
   }, [config.header, config.pagination, state.size]);
@@ -75,15 +73,24 @@ export default function App() {
   const handleSize = (value) => {
     dispatch(setData({ size: value, pageNumber: 1, data: state.initialData }));
   };
+
+  const handlePageNumber = (value) => {
+    dispatch(
+      setData({
+        size: state.size,
+        pageNumber: value,
+        data: state.initialData
+      })
+    );
+  };
   return (
     <div className="App">
       <Headers
         handleHeader={handleHeader}
         handlePagination={handlePagination}
         handleSize={handleSize}
-        pagination={config.pagination}
+        config={config}
         handleSorting={handleSorting}
-        sortingList={config.sortingList}
       />
       <Table
         headers={headers}
@@ -92,7 +99,15 @@ export default function App() {
         handleHeaderClick={handleHeaderClick}
         sortingList={config.sortingList}
       />
-      {config.pagination ? <Pagination total={total}  /> : ""}
+      {config.pagination ? (
+        <Pagination
+          total={total}
+          handlePageNumber={handlePageNumber}
+          currentPage={state.pageNumber}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

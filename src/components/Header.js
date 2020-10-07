@@ -21,7 +21,7 @@ const Header = (props) => {
                   type="checkbox"
                   name={value}
                   value={value}
-                  defaultChecked={props.sortingList[value]}
+                  defaultChecked={props.config.sortingList[value]}
                   onClick={props.handleSorting}
                 />
                 <input
@@ -42,17 +42,18 @@ const Header = (props) => {
         value="header"
         id="header"
       />
-      <label htmlFor="header">Is header fixed?</label>
+      <label htmlFor="header">Fix Header</label>
 
       <input
         onClick={props.handlePagination}
         type="checkbox"
         name="pagination"
         value="pagination"
+        defaultChecked={props.config.pagination}
         id="pagination"
       />
-      <label htmlFor="pagination">Pagination enable?</label>
-      {props.pagination ? (
+      <label htmlFor="pagination">Enable Pagination</label>
+      {props.config.pagination ? (
         <select
           onChange={(e) => {
             props.handleSize(e.target.value);

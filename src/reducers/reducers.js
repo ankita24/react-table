@@ -2,7 +2,8 @@ export const initialState = {
   dataToShow: [],
   data: [],
   order: {},
-  size: undefined
+  size: undefined,
+  pageNumber: 0
 };
 
 const ASC = "asc";
@@ -15,8 +16,13 @@ export const orderReducer = (state, action) => {
       if (size && pageNumber) {
         return {
           ...state,
-          data: action.payload.data.slice(0, size),
-          size
+          initialData: action.payload.data,
+          data: action.payload.data.slice(
+            Number((pageNumber - 1) * size),
+            Number((pageNumber - 1) * size) + Number(size)
+          ),
+          size,
+          pageNumber
         };
       }
 

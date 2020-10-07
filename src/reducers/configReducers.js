@@ -1,6 +1,6 @@
 export const initialStateConfig = {
   header: false,
-  pagination: false,
+  pagination: true,
   sortingList: {
     name: false,
     capital: true,
