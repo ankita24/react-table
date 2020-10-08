@@ -17,18 +17,15 @@ table {
 th {
   background-color: grey;
 }
-th {
-  background-color: grey;
-}
 body.notFixed .thItem {
   background-color: grey;
   user-select: none;
 }
 
 body.fixed .thItem {
-  background-color: grey;
   position: sticky;
   top: 0;
+  background-color: grey;
   user-select: none;
 }
 

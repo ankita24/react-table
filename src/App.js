@@ -1,67 +1,61 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useMemo, useReducer } from "react";
 import Headers from "./components/Header";
+import Pagination from "./components/Pagination";
 import Table from "./components/Table";
 import { headers } from "./constants";
-import {
-  initialStateConfig,
-  setFilter,
-  setHeader,
-  setPagination,
-  setSorting
-} from "./reducers/configReducers";
+import { useConfig } from "./hooks/useConfig";
+import { useSearch } from "./hooks/useSearch";
 import {
   initialState,
+  orderReducer,
   setData,
-  toggleOrder,
   setPaginatedData,
-  setSize
+  setSize,
+  toggleOrder
 } from "./reducers/reducers";
-import rootReducers from "./rootReducers";
 import "./styles.css";
-import Pagination from "./components/Pagination";
 import { pick } from "./util";
 
 export default function App() {
-  React.useEffect(() => {
-    fetchData();
-  }, []);
-  const { orderReducer, configReducers } = rootReducers();
-
   const [state, dispatch] = useReducer(orderReducer, initialState);
-  const [config, dispatchConfig] = useReducer(
-    configReducers,
-    initialStateConfig
+  const {
+    config,
+    handleFilters,
+    handleHeader,
+    handlePagination,
+    handleSorting
+  } = useConfig();
+
+  const { filteredData, handleSearch } = useSearch(
+    state.data,
+    config.filterableList
   );
+
   const fetchData = async () => {
     const response = await fetch(`https://restcountries.eu/rest/v2/all`);
     if (response.ok) {
       let info = await response.json();
       const data = info.map((country) => {
-        return pick(country, headers.map(header => header.value))
-      })
+        return pick(
+          country,
+          headers.map((header) => header.value)
+        );
+      });
       dispatch(setData({ data }));
     }
   };
-  React.useEffect(() => {
-    dispatch(setPaginatedData(1, config.pagination));
-  }, [config.pagination]);
 
-  const handleHeader = () => {
-    dispatchConfig(setHeader());
-  };
-  const handlePagination = (e) => {
-    dispatchConfig(setPagination());
-  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  const handleSorting = (e) => {
-    dispatchConfig(setSorting(e.target.value));
-  };
-  const total =
-    state.total && state.size ? Math.ceil(state.total / Number(state.size)) : 0;
-
-  React.useEffect(() => {
-    document.body.className = config.header ? "fixed" : "notFixed";
-  }, [config.header, config.pagination, state.size]);
+  const total = useMemo(
+    () =>
+      state.total && state.size
+        ? Math.ceil(state.total / Number(state.size))
+        : 0,
+    [state.total, state.size]
+  );
 
   const handleHeaderClick = (name) => {
     dispatch(toggleOrder(name));
@@ -73,22 +67,11 @@ export default function App() {
   const handlePageNumber = (value) => {
     dispatch(setPaginatedData(value, config.pagination));
   };
-  const handleFilters = (e) => {
-    dispatchConfig(setFilter(e.target.value));
-  };
-  const handleSearch = (e, value) => {
-    if (e.keyCode === 13) {
-      dispatch(
-        setData({
-          size: state.size,
-          pageNumber: 1,
-          searchValue: e.target.value,
-          value,
-          data: state.initialData
-        })
-      );
-    }
-  };
+
+  useEffect(() => {
+    dispatch(setPaginatedData(1, config.pagination));
+  }, [config.pagination]);
+
   return (
     <div className="App">
       <Headers
@@ -98,14 +81,15 @@ export default function App() {
         config={config}
         handleSorting={handleSorting}
         handleFilters={handleFilters}
+        handleSearch={handleSearch}
+        currentPage={state.pageNumber}
       />
       <Table
         headers={headers}
-        data={state.data}
+        data={filteredData}
         order={state.order}
         handleHeaderClick={handleHeaderClick}
         config={config}
-        handleSearch={handleSearch}
       />
       {config.pagination ? (
         <Pagination
