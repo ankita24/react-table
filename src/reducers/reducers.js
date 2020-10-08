@@ -12,15 +12,16 @@ const DESC = "desc";
 
 export const orderReducer = (state, action) => {
   switch (action.type) {
-    case "SET_DATA":
+    case "SET_DATA": {
       return {
         ...state,
         data: action.payload.data,
         initialData: action.payload.data,
         total: action.payload.data.length
       };
+    }
 
-    case "SET_PAGINATION_DATA":
+    case "SET_PAGINATION_DATA": {
       const { pageNumber, isPaginationEnabled } = action;
       return {
         ...state,
@@ -33,6 +34,8 @@ export const orderReducer = (state, action) => {
           : state.initialData,
         pageNumber
       };
+    }
+
     case "SET_SIZE": {
       const { size } = action;
       return {
@@ -53,7 +56,6 @@ export const orderReducer = (state, action) => {
         return {
           ...state,
           order: {
-            // ...state.order, // if you add this line, it will remember the last sort for the column (also line 45)
             [name]: nextDirection
           },
           data: state.data.sort((a, b) => {
@@ -68,8 +70,7 @@ export const orderReducer = (state, action) => {
       return {
         ...state,
         order: {
-          // ...state.order,
-          [name]: DESC, // Assuming the default order is ascending
+          [name]: DESC,
           data: state.data.sort((a, b) => {
             if (a[name] > b[name]) {
               return -1;
@@ -81,7 +82,7 @@ export const orderReducer = (state, action) => {
     }
 
     default: {
-      return state;
+      return { ...state };
     }
   }
 };

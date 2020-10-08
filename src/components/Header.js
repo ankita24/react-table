@@ -14,25 +14,23 @@ const Header = (props) => {
         {headers.map(({ value, label }) => {
           return (
             <div style={{ paddingTop: "5px" }} key={value}>
-              <label>
-                {label}
-                <input
-                  style={{ marginLeft: 40 }}
-                  type="checkbox"
-                  name={value}
-                  value={value}
-                  defaultChecked={props.config.sortingList[value]}
-                  onClick={props.handleSorting}
-                />
-                <input
-                  style={{ marginLeft: 50 }}
-                  type="checkbox"
-                  name={value}
-                  value={value}
-                  defaultChecked={props.config.filterableList[value]}
-                  onClick={props.handleFilters}
-                />
-              </label>
+              <label>{label}</label>
+              <input
+                style={{ marginLeft: 40 }}
+                type="checkbox"
+                name={value}
+                value={value}
+                defaultChecked={props.config.sortingList[value]}
+                onClick={props.handleSorting}
+              />
+              <input
+                style={{ marginLeft: 50 }}
+                type="checkbox"
+                name={value}
+                value={value}
+                defaultChecked={props.config.filterableList[value]}
+                onClick={props.handleFilters}
+              />
             </div>
           );
         })}
@@ -61,16 +59,21 @@ const Header = (props) => {
             props.handleSize(e.target.value);
           }}
         >
-          <option>5</option>
-          <option>10</option>
-          <option>15</option>
+          <option value="5">Show 5</option>
+          <option value="10">Show 10</option>
+          <option value="15">Show 15</option>
         </select>
       ) : (
         ""
       )}
+      <input
+        key={props.currentPage + props.config.pagination}
+        style={{ margin: "10px", padding: "10px" }}
+        placeholder="Search"
+        onChange={props.handleSearch}
+      />
     </>
   );
 };
 
-// for should be htmlFor and input should have the same as id for it to work
 export default Header;

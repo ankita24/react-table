@@ -1,8 +1,8 @@
 import { headers } from "../constants";
 
 const initialCountryObj = {};
-headers.forEach(country => {
-  initialCountryObj[country.value] = false
+headers.forEach((country) => {
+  initialCountryObj[country.value] = true;
 });
 
 export const initialStateConfig = {
@@ -14,21 +14,30 @@ export const initialStateConfig = {
 
 export const configReducers = (state, action) => {
   switch (action.type) {
-    case "HEADER":
-      return { ...state, header: !state.header };
-    case "PAGINATION":
-      return { ...state, pagination: !state.pagination };
-    case "ENABLE_SORTING":
+    case "HEADER": {
+      return {
+        ...state,
+        header: !state.header
+      };
+    }
+    case "PAGINATION": {
+      return {
+        ...state,
+        pagination: !state.pagination
+      };
+    }
+    case "ENABLE_SORTING": {
       const sorting = { ...state.sortingList };
       sorting[action.sort] = !state.sortingList[action.sort];
       return { ...state, sortingList: sorting };
-    case "ENABLE_FILTER":
+    }
+    case "ENABLE_FILTER": {
       const filters = { ...state.filterableList };
       filters[action.filter] = !state.filterableList[action.filter];
-      console.log(filters);
       return { ...state, filterableList: filters };
+    }
     default:
-      return state;
+      return { ...state };
   }
 };
 export function setHeader() {

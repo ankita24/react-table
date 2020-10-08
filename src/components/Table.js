@@ -15,67 +15,42 @@ const TableHeader = ({ value, label, onClick, sortOrder, disabled }) => {
   );
 };
 
-const Table = ({
-  headers,
-  data,
-  order,
-  handleHeaderClick,
-  config,
-  handleSearch
-}) => {
+const Table = ({ headers, data, order, handleHeaderClick, config }) => {
   if (!data.length) {
     return null;
   }
   return (
-    <table style={{ width: "100%" }}>
-      <thead>
-        <tr>
-          {headers.map(({ value, label }) => {
+    <>
+      <table style={{ width: "100%" }}>
+        <thead>
+          <tr>
+            {headers.map(({ value, label }) => {
+              return (
+                <TableHeader
+                  key={value}
+                  value={value}
+                  label={label}
+                  sortOrder={order[value]}
+                  onClick={handleHeaderClick}
+                  disabled={!config.sortingList[value]}
+                />
+              );
+            })}
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item, index) => {
             return (
-              <td key={value}>
-                {config.filterableList[value] ? (
-                  <input
-                    placeholder={`Search for ${label}`}
-                    onKeyDown={(e) => handleSearch(e, value)}
-                  />
-                ) : (
-                  ""
-                )}
-              </td>
+              <tr key={item.name + index}>
+                {Object.keys(item).map((data) => (
+                  <td key={data + item[data]}>{item[data]}</td>
+                ))}
+              </tr>
             );
           })}
-        </tr>
-      </thead>
-      <thead>
-        <tr>
-          {headers.map(({ value, label }) => {
-            return (
-              <TableHeader
-                key={value}
-                value={value}
-                label={label}
-                sortOrder={order[value]}
-                onClick={handleHeaderClick}
-                disabled={!config.sortingList[value]}
-              />
-            );
-          })}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((item) => {
-          return (
-            <tr key={item.name}>
-              <td>{item.name}</td>
-              <td>{item.capital}</td>
-              <td>{item.population}</td>
-              <td>{item.region}</td>
-              <td>{item.area}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </>
   );
 };
 

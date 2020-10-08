@@ -10,7 +10,7 @@ const Pagination = ({ currentPage, total, ...props }) => {
     currentPage + 4
   ];
   return (
-    <>
+    <div>
       Showing Page {currentPage} of {total} pages
       <div className="flexDiv">
         <button
@@ -41,7 +41,7 @@ const Pagination = ({ currentPage, total, ...props }) => {
           {"Next"}
         </button>
       </div>
-    </>
+    </div>
   );
 };
 export default Pagination;
