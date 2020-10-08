@@ -9,7 +9,7 @@ export function useConfig() {
   const handleHeader = () => {
     dispatchConfig(setHeader());
   };
-  const handlePagination = (e) => {
+  const handlePagination = () => {
     dispatchConfig(setPagination());
   };
 
